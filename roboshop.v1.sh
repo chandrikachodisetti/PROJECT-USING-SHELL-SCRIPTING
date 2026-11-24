@@ -39,7 +39,7 @@ else
     route53_record:"$domain_name"
  fi   
 
- CHANGE_ID=$(aws route53 change-resource-record-sets \
+ aws route53 change-resource-record-sets \
   --hosted-zone-id "$hostedzone_id" \
   --change-batch "{
     \"Changes\": [{
@@ -50,8 +50,7 @@ else
         \"TTL\": 1,
         \"ResourceRecords\": [{\"Value\": \"'$IP\'"}]
       }
-    }]
-  }" \
+    }]" \
   --query 'ChangeInfo.Id' \
   --output text)
 done
