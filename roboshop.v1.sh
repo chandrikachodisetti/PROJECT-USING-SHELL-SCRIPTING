@@ -42,9 +42,9 @@ else
     route53_record="${domain_name}"
  fi   
  echo "record: ${route53_record}"
- aws route53 change-resource-record-sets \ 
-    --hosted-zone-id="$hosted_zone_id" \
-    --change-batch '{
+   aws route53 change-resource-record-sets \ 
+     --hosted-zone-id="$hosted_zone_id" \
+     --change-batch '{
     "Changes": [
        {
         "Action": "UPSERT",
@@ -57,6 +57,6 @@ else
        }
     ]
   }'
-  echo "Updated R53 record for $instance"
+  echo "Updated route53 record for $instance"
 done
    
