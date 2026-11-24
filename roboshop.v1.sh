@@ -32,18 +32,18 @@ if [ $instance != frontend ]; then ####conditions
   --query 'Reservations[0].Instances[0].privateIpAddress' \
   --output text
     )
-    route53_record"$instance.$domain_name"
+    route53_record="$instance.$domain_name"
 else 
     IP=$(aws ec2 describe-instances \
   --instance-ids "roboshop-$instance" \
   --query 'Reservations[0].Instances[0].privateIpAddress' \
   --output text
     )
-    route53_record:"$domain_name"
+    route53_record="$domain_name"
  fi   
 
  aws route53 change-resource-record-sets \
-  --hosted-zone-id "$hostedzone_id" \
+  --hosted-zone-id "$hosted_zone_id" \
   --change-batch "{
     \"Changes\": [
        {
@@ -57,6 +57,5 @@ else
        }
     ]
 }" \
-
 done
    
