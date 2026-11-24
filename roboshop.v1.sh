@@ -42,7 +42,7 @@ else
     )
     r53_record="${domain_name}"
 fi   
-   echo "record: ${r53_record}"
+   echo "record: $r53_record"
      aws r53 change-resource-record-sets \
        --hosted-zone-id "$hosted_zone_id" \
      --change-batch '{
