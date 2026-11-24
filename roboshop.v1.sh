@@ -48,17 +48,16 @@ else
      --change-batch '{
     "Changes": [
        {
-        "Action": "UPSERT",
-        "ResourceRecordSet": {
-        "Name": "'$r53_record'",
-        "Type": "A",
-        "TTL": 1,
-        "ResourceRecords": [{"Value": "'$IP'"}]
-          } 
-       }
+          "Action": "UPSERT",
+          "ResourceRecordSet": {
+          "Name": "'$r53_record'",
+          "Type": "A",
+          "TTL": 1,
+          "ResourceRecords": [{"Value": "'$IP'"}]
+           } 
+        }
     ]
   }'
-
-       echo "Updated r53 record for $instance"
+    echo "Updated r53 record for $instance"
 done
    
