@@ -28,14 +28,14 @@ do
 
 
 if [ $instance != frontend ]; then ####conditions
-    IP=$( aws ec2 describe-instances \
+    IP=$(aws ec2 describe-instances \
   --instance-ids "$instance_id" \
   --query 'Reservations[].Instances[].privateIpAddress' \
   --output text
     )
     r53_record="{$instance}.${domain_name}"
 else 
-    IP=$( aws ec2 describe-instances \
+    IP=$(aws ec2 describe-instances \
   --instance-ids "$instance_id" \
   --query 'Reservations[].Instances[].publicIpAddress' \
   --output text
@@ -43,8 +43,8 @@ else
     r53_record="${domain_name}"
 fi   
    echo "record: ${r53_record}"
-   aws r53 change-resource-record-sets \
-     --hosted-zone-id $hosted_zone_id" \  
+     aws r53 change-resource-record-sets \
+       --hosted-zone-id "$hosted_zone_id" \
      --change-batch '{
     "Changes": [
        {
@@ -54,10 +54,10 @@ fi
           "Type": "A",
           "TTL": 1,
           "ResourceRecords": [{"Value": "'$IP'"}]
-                     } 
+              } 
         }
-      ]
-    }'
-    echo "Updated r53 record for $instance"
+    ]
+}'
+      echo "Updated r53 record for $instance"
 done
    
