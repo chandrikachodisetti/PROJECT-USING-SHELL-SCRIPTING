@@ -41,7 +41,7 @@ else
   --output text
     )
     r53_record="${domain_name}"
- fi   
+fi   
    echo "record: ${r53_record}"
    aws r53 change-resource-record-sets \
      --hosted-zone-id $hosted_zone_id" \  
@@ -54,10 +54,10 @@ else
           "Type": "A",
           "TTL": 1,
           "ResourceRecords": [{"Value": "'$IP'"}]
-           } 
+                     } 
         }
-    ]
-  }'
+      ]
+    }'
     echo "Updated r53 record for $instance"
 done
    
