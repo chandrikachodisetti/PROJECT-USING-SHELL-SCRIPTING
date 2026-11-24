@@ -10,7 +10,7 @@ hostedzone_id="Z02512341YMTQGODMGXYF"
 ##creating ec2 instance and get the  instance id  and public and private IPS ####
 
 
-for instance in $@
+for instance in $@ ######(loops)
 do 
     echo "creating instance:$instance"
 
@@ -23,18 +23,36 @@ do
   --output text
   )
     echo "$instance ID:$instance_id"    
-if [ $instance != frontend ]; then
+if [ $instance != frontend ]; then ####conditions
     IP=$(aws ec2 describe-instances \
   --instance-ids "$instance_id" \
   --query 'Reservations[0].Instances[0].privateIpAddress' \
   --output text
     )
+    route53_record:"$instance.$domain_name"
 else 
     IP=$(aws ec2 describe-instances \
   --instance-ids "roboshop-$instance" \
   --query 'Reservations[0].Instances[0].privateIpAddress' \
   --output text
     )
+    route53_record:"$domain_name"
  fi   
 
+ CHANGE_ID=$(aws route53 change-resource-record-sets \
+  --hosted-zone-id "$hostedzone_id" \
+  --change-batch "{
+    \"Changes\": [{
+      \"Action\": \"UPSERT\",
+      \"ResourceRecordSet\": {
+        \"Name\": \"$ route53_record\",
+        \"Type\": \"A\",
+        \"TTL\": 1,
+        \"ResourceRecords\": [{\"Value\": \"$IP\"}]
+      }
+    }]
+  }" \
+  --query 'ChangeInfo.Id' \
+  --output text)
 done
+   
