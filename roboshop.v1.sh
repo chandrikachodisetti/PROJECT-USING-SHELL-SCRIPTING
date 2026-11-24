@@ -21,7 +21,7 @@ do
   --query 'Instances[0].InstanceId' \
   --output text
   )
-    echo "$instance ID:$instance_id"    
+    echo "$instance instance ID: $instance_id"  
 
     ##get the public and private ip address##
 
@@ -43,20 +43,21 @@ else
  fi   
    echo "record: ${route53_record}"
    aws route53 change-resource-record-sets \
-     --hosted-zone-id $hosted_zone_id  \  
+     --hosted-zone-id "$hosted_zone_id" \  
      --change-batch '{
     "Changes": [
        {
         "Action": "UPSERT",
         "ResourceRecordSet": {
-        "Name": "'$route53_record'",
-        "Type": "A",
+        "Name":"'$route53_record'",
+        "Type":"A",
         "TTL": 1,
         "ResourceRecords": [{"Value": "'$IP'"}]
-          }
+          } 
        }
     ]
   }'
-  echo "Updated route53 record for $instance"
+
+     echo "Updated route53 record for $instance"
 done
    
