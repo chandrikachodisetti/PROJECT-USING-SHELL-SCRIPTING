@@ -21,7 +21,7 @@ do
   --query 'Instances[0].InstanceId' \
   --output text
   )
-      
+    echo "$instance ID:$instance_id"    
 
     ##get the public and private ip address##
 
