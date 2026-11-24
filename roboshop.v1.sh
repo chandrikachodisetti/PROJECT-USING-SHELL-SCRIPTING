@@ -5,7 +5,7 @@
 ami_id="ami-0055977a6e828a4f4"
 instance_type="t3.micro"
 domain_name="sep92s.online"
-hosted_zone_id="Z02512341YMTQGODMGXYF"
+hosted_zone_id= "Z02512341YMTQGODMGXYF"
 
 ##creating ec2 instance and get the  instance id ####
 
