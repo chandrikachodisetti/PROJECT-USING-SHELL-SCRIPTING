@@ -25,7 +25,7 @@ do
     echo "$instance ID:$instance_id"    
 if [ $instance != frontend ]; then
     IP=$(aws ec2 describe-instances \
-  --instance-ids "roboshop-$instance" \
+  --instance-ids "$instance_id" \
   --query 'Reservations[0].Instances[0].privateIpAddress' \
   --output text
     )
