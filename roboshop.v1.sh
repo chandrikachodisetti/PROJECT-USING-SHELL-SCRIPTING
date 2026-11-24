@@ -7,6 +7,9 @@ instance_type="t3.micro"
 domain_name="sep92s.online"
 hostedzone_id="Z02512341YMTQGODMGXYF"
 
+##creating ec2 instance and get the  instance id  and public and private IPS ####
+
+
 for instance in $@
 do 
     echo "creating instance:$instance"
@@ -20,4 +23,18 @@ do
   --output text
   )
     echo "$instance ID:$instance_id"    
+if [ $instance -ne frontend ]; then
+    IP=$(aws ec2 describe-instances \
+  --instance-ids "roboshop-$instance" \
+  --query 'Reservations[0].Instances[0].privateIpAddress' \
+  --output text
+    )
+else 
+    IP=$(aws ec2 describe-instances \
+  --instance-ids "roboshop-$instance" \
+  --query 'Reservations[0].Instances[0].privateIpAddress' \
+  --output text
+    )
+ fi   
+
 done
