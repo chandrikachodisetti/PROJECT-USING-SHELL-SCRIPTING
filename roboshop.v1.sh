@@ -42,17 +42,17 @@ else
     route53_record="$domain_name"
  fi   
 
- aws route53 change-resource-record-sets \
-  --hosted-zone-id "$hosted_zone_id" \
+ aws route53 change-resource-record-sets 
+  --hosted-zone-id "$hosted_zone_id" 
   --change-batch "{
-    \"Changes\": [
+    "Changes": [
        {
-        \"Action\": \"UPSERT\",
-        \"ResourceRecordSet\": {
-        \"Name\": \"$route53_record\",
-        \"Type\": \"A\",
-        \"TTL\": 1,
-        \"ResourceRecords\": [{\"Value\": \"'$IP\'"}]
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+        "Name": "$route53_record",
+        "Type": "A",
+        "TTL": 1,
+        "ResourceRecords": [{"Value": "'$IP'"}]
           }
        }
     ]
