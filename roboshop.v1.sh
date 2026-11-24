@@ -5,7 +5,7 @@
 ami_id="ami-0055977a6e828a4f4"
 instance_type="t3.micro"
 domain_name="sep92s.online"
-hostedzone_id="Z02512341YMTQGODMGXYF"
+hosted_zone_id="Z02512341YMTQGODMGXYF"
 
 ##creating ec2 instance and get the  instance id ####
 
@@ -35,7 +35,7 @@ if [ $instance != frontend ]; then ####conditions
     route53_record="$instance.$domain_name"
 else 
     IP=$(aws ec2 describe-instances \
-  --instance-ids "roboshop-$instance" \
+  --instance-ids "$instance_id" \
   --query 'Reservations[0].Instances[0].privateIpAddress' \
   --output text
     )
@@ -56,6 +56,6 @@ else
           }
        }
     ]
-  }" \
+  }" 
 done
    
