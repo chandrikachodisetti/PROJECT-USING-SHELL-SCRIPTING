@@ -59,6 +59,6 @@ else
     ]
   }'
 
-     echo "Updated r53 record for $instance"
+       echo "Updated r53 record for $instance"
 done
    
