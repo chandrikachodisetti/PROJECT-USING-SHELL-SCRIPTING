@@ -41,7 +41,7 @@ else
     )
     route53_record="${domain_name}"
  fi   
- echo "Record: ${r53_record}"
+ echo "Record: ${route53_record}"
  aws route53 change-resource-record-sets \ 
   --hosted-zone-id="$hosted_zone_id" \
   --change-batch '{
