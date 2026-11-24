@@ -21,37 +21,43 @@ do
   --query 'Instances[0].InstanceId' \
   --output text
   )
-    echo "$instance instance ID: $instance_id"
+      
 
-    if [ $instance != "frontend" ]; then
-        IP=$( aws ec2 describe-instances --instance-ids $instance_id \
-             --query 'Reservations[].Instances[].PrivateIpAddress' --output text
-        )
-        r53_record="${instance}.${domain_name}"
-    else
-        IP=$( aws ec2 describe-instances --instance-ids $instance_id \
-             --query 'Reservations[].Instances[].PublicIpAddress' --output text
-        )
-        r53_record="${domain_name}"
-    fi
+    ##get the public and private ip address##
 
-    # update R53 record
-    echo "Record: ${r53_record}"
-    aws route53 change-resource-record-sets \
-    --hosted-zone-id $hosted_zone_id \
-    --change-batch '{
-        "Changes": [
-            {
-                "Action": "UPSERT",
-                "ResourceRecordSet": {
-                    "Name": "'$r53_record'",
-                    "Type": "A",
-                    "TTL": 1,
-                    "ResourceRecords": [{"Value": "'$IP'"}]
-                }
-            }
-        ]
-    }'
 
-    echo "Updated R53 record for $instance"
+if [ $instance != frontend ]; then ####conditions
+    IP=$(aws ec2 describe-instances \
+  --instance-ids "$instance_id" \
+  --query 'Reservations[0].Instances[0].privateIpAddress' \
+  --output text
+    )
+    route53_record="{$instance}.${domain_name}"
+else 
+    IP=$(aws ec2 describe-instances \
+  --instance-ids "$instance_id" \
+  --query 'Reservations[0].Instances[0].privateIpAddress' \
+  --output text
+    )
+    route53_record="${domain_name}"
+ fi   
+   echo "record: ${route53_record}"
+   aws route53 change-resource-record-sets \
+     --hosted-zone-id "$hosted_zone_id" \  
+     --change-batch '{
+    "Changes": [
+       {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+        "Name":"'$route53_record'",
+        "Type":"A",
+        "TTL": 1,
+        "ResourceRecords": [{"Value": "'$IP'"}]
+          } 
+       }
+    ]
+  }'
+
+     echo "Updated route53 record for $instance"
 done
+   
