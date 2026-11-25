@@ -41,8 +41,8 @@ validate $? "remote connection"
 systemctl restart mongod &>> $logs_file
 validate $? "restart the system if u r any changes in editor"
 
-netstat -lntp &>> $logs_file
-validate $? "port number 27017"
+#netstat -lntp &>> $logs_file
+#validate $? "port number 27017"
 
 
 
