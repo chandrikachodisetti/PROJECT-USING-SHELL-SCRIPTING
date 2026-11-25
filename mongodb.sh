@@ -9,7 +9,7 @@ Y="\e[33m"
 N="\e[0m"
 
 if [ $user_id -ne 0 ]; then
-    echo "Please run this script with sudo access..{G}"
+    echo "Please run this script with sudo access.."
     exit 1
 fi
 
@@ -26,4 +26,4 @@ validate(){
     fi
 }
 cp mongo.repo /etc/yum.repos.d/mongo.repo
-validate $? "adding mongodbrepo"
+validate $? "{G}adding mongodbrepo"
