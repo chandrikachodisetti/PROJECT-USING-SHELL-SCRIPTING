@@ -26,4 +26,11 @@ validate(){
     fi
 }
 cp mongo.repo /etc/yum.repos.d/mongo.repo
-validate $? "${G}adding mongodbrepo"
+validate $? "${N}adding mongodbrepo" &>> $logs_file
+
+dnf install mongodb-org -y
+validate $? "${y}install mongodb" &>> $logs_file
+
+systemctl enable mongod
+systemctl start mongod
+validate $? ${y}enable and start mondodb &>> $logs_file
