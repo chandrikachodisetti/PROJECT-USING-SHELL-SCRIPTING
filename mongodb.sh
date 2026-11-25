@@ -25,12 +25,13 @@ validate(){
         echo -e "${2}..${G}SUCCESS${N}" | tee -a $logs_file
     fi
 }
-cp mongo.repo /etc/yum.repos.d/mongo.repo 
-validate $? "${R}adding mongodbrepo" &>> $logs_file
+cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $logs_file
+validate $? "${R}adding mongodbrepo" 
 
-dnf install mongodb-org -y 
-validate $? "${R}install mongodb" &>> $logs_file
+dnf install mongodb-org -y &>> $logs_file
+validate $? "${R}install mongodb" 
 
-systemctl enable mongod
-systemctl start mongod
-validate $? "${R}enable and start mondodb"&>> $logs_file
+systemctl enable mongod &>> $logs_file
+systemctl start mongod &>> $logs_file
+validate $? "${R}enable and start mondodb"
+
