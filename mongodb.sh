@@ -25,3 +25,5 @@ validate(){
         echo -e "${2}..${G}SUCCESS${N}" | tee -a $logs_file
     fi
 }
+cp mongo.repo /etc/yum.repos.d/mongo.repo
+validate $? "adding mongodb.pero"
