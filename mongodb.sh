@@ -35,3 +35,9 @@ systemctl enable mongod &>> $logs_file
 systemctl start mongod &>> $logs_file
 validate $? "${y}""enable and start mondodb"
 
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+validate $? "remote connection"
+
+systemctl restart
+validate $? "restart the system"
+
