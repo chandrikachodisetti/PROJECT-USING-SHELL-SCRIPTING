@@ -35,9 +35,13 @@ systemctl enable mongod &>> $logs_file
 systemctl start mongod &>> $logs_file
 validate $? "${y}""enable and start mondodb"
 
-sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>> $logs_file
 validate $? "remote connection"
 
-systemctl restart
-validate $? "restart the system"
+systemctl restart mongod &>> $logs_file
+validate $? "restart the system if u r any changes in editor"
+
+netstat -lntp &>> $logs_file
+
+
 
