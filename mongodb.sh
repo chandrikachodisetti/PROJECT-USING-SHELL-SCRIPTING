@@ -26,4 +26,4 @@ validate(){
     fi
 }
 cp mongo.repo /etc/yum.repos.d/mongo.repo
-validate $? "{G}adding mongodbrepo"
+validate $? "${G}adding mongodbrepo"
