@@ -9,7 +9,7 @@ Y="\e[33m"
 N="\e[0m"
 
 if [ $user_id -ne 0 ]; then
-    echo "{G}Please run this script with sudo access.."
+    echo "Please run this script with sudo access..{G}"
     exit 1
 fi
 
