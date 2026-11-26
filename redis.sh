@@ -27,6 +27,7 @@ validate(){
         echo -e "${timestamp} [INFO] ${2}..${G}SUCCESS${N}" | tee -a $logs_file
     fi
 }
+echo "$timestamp =======script started execution=========" | tee -a $logs_file
 dnf module disable redis -y
 dnf module enable redis:7 -y
 dnf install redis -y
