@@ -41,19 +41,19 @@ if [ $? -ne 0 ]; then
     echo  -e "$(timestamp)[ INFO ] this user already exits...${Y}SKIPPING${N}"
     fi
 
-mkdir  -p /app
+mkdir  -p /app  &>> $logs_file
 validate $? "creating the folder"
 
-curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
+curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip  &>> $logs_file
 validate $? "download the  catalogue code"
 
-cd /app
+cd /app  &>> $logs_file
 validate $? "change the directory"
 
-unzip /tmp/catalogue.zip
+unzip /tmp/catalogue.zip  &>> $logs_file
 validate $? "unzip the catalogue file"
 
-npm install
+npm install  &>> $logs_file
 validate $? "install the npm depnedcies"
 
 
