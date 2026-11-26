@@ -50,8 +50,8 @@ validate $? "download the  catalogue code"
 
 
 cd /app  &>> $logs_file
-unzip -o  /tmp/catalogue.zip  &>> $logs_file
-validate $? "unzip the catalogue file"
+unzip  /tmp/catalogue.zip  &>> $logs_file
+validate $? "unziping  the catalogue file"
 
 npm install  &>> $logs_file
 validate $? "install the npm depnedcies"
