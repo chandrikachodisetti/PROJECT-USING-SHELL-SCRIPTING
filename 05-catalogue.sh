@@ -59,6 +59,11 @@ validate $? "install the npm depnedcies"
 sed -i "s/DOMAIN-NAME/$domain_name/  catalogue.service"  &>> $logs_file
 cp catalogue.service /etc/systemd/system/catalogue.service  &>> $logs_file
 
+systemctl daemon-reload &>> $logs_file
+systemctl enable catalogue &>> $logs_file
+systemctl start catalogue &>> $logs_file
+validate $? "enable and start"
+
 
 echo "$(timestamp) [info] script completed in $SECONDS Seconds "
 echo "$(timestamp) [info] =======script completed execution=========" | tee -a $logs_file
