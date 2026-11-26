@@ -2,6 +2,7 @@ user_id=$(id -u)
 logs_folder="/var/log/roboshop"
 logs_file="${logs_folder}/${0}.log"
 domain_name="sep92s.online"
+scripts_dir="$(dirmame "realpath($0)")"
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
@@ -56,8 +57,8 @@ validate $? "unzipping  the catalogue file"
 npm install  &>> $logs_file
 validate $? "install the npm depnedcies"
 
-sed -i "s/DOMAIN-NAME/$domain_name/  catalogue.service"  &>> $logs_file
-cp catalogue.service /etc/systemd/system/catalogue.service  &>> $logs_file
+sed -i "s/DOMAIN-NAME/$domain_name/  $scripts_dir "catalogue.service""  &>> $logs_file
+cp  $scripts_dir"catalogue.service" /etc/systemd/system/catalogue.service  &>> $logs_file
 
 systemctl daemon-reload &>> $logs_file
 systemctl enable catalogue &>> $logs_file
