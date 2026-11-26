@@ -66,6 +66,11 @@ systemctl enable catalogue  &>> $logs_file
 systemctl start catalogue  &>> $logs_file
 validate $? "enable and start"
 
+cp "$scripts_dir/mongo.repo" /etc/yum.repos.d/mongo.repo
+validate $? "adding mongorepo"
+
+dnf install mongodb-mongosh -y
+validate $? "install mongodb"
 
 echo "$(timestamp) [info] script completed in $SECONDS Seconds "
 echo "$(timestamp) [info] =======script completed execution=========" | tee -a $logs_file
