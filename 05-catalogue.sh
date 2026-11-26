@@ -1,6 +1,7 @@
 user_id=$(id -u)
 logs_folder="/var/log/roboshop"
 logs_file="${logs_folder}/${0}.log"
+domain_name="sep92s.online"
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
@@ -55,6 +56,9 @@ validate $? "unzip the catalogue file"
 
 npm install  &>> $logs_file
 validate $? "install the npm depnedcies"
+
+sed -i "s/DOMAIN-NAME/$domain_name/  catalogue.service"  &>> $logs_file
+cp catalogue.service /etc/systemd/system/catalogue.service  &>> $logs_file
 
 
 echo "$(timestamp) [info] script completed in $SECONDS Seconds "
