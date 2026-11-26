@@ -44,7 +44,7 @@ validate $? "system enable and start"
 
 
 
-echo "$(timestamp) [info] script completed in $seconds Seconds "
+echo "$(timestamp) [info] script completed in $SECONDS Seconds "
 echo "$(timestamp) [info] =======script completed execution=========" | tee -a $logs_file
 
 
