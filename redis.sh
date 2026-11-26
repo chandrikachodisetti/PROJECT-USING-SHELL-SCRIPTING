@@ -16,31 +16,35 @@ fi
 mkdir -p $logs_folder
 
 timestamp(){
-    date '+%d-%m-%Y %H:%M:%S'
+    date "+%d-%m-%Y %H:%M:%S"
 }
 
 validate(){
     if [ $1 -ne 0 ]; then
-        echo -e "${timestamp}[ERROR] ${2}..${R}FAILED${N}" | tee -a $logs_file
+        echo -e "$(timestamp) [ERROR] ${2}..${R}FAILED${N}" | tee -a $logs_file
         exit 1
     else
-        echo -e "${timestamp} [INFO] ${2}..${G}SUCCESS${N}" | tee -a $logs_file
+        echo -e "$(timestamp) [INFO] ${2}..${G}SUCCESS${N}" | tee -a $logs_file
     fi
 }
-echo "$timestamp =======script started execution=========" 
-dnf module disable redis -y
-dnf module enable redis:7 -y
-dnf install redis -y
-validate $? "install redis" &>> $logs_file
+echo "$(timestamp) [info] =======script started execution=========" | tee -a $logs_file
+
+
+dnf module disable redis -y &>> $logs_file
+dnf module enable redis:7 -y &>> $logs_file
+dnf install redis -y &>> $logs_file
+validate $? "install redis" 
 
 sed -i -e 's/^bind 127.0.0.1/bind 0.0.0.0/' -e 's/^protected-mode yes/protected-mode no/' /etc/redis/redis.conf
 validate $? "remote connection" &>> $logs_file
 
-systemctl enable redis
+systemctl enable redis &>> $logs_file
 systemctl start redis
-validate $? "system enable and start" &>> $logs_file
+validate $? "system enable and start" 
 
-echo "$timestamp =======total time taken=========" 
+echo "$(timestamp) [info] script completed in $seconds Seconds
+echo "$(timestamp) [info] =======script completed execution=========" | tee -a $logs_file
+
 
 
 
