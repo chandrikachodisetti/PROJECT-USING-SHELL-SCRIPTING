@@ -41,6 +41,20 @@ if [ $? -ne 0 ]; then
     echo  -e "$(timestamp)[ INFO ] this user already exits...${Y}SKIPPING${N}"
     fi
 
+mkdir  -p /app
+validate $? "creating the folder"
+
+curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
+validate $? "download the  catalogue code"
+
+cd /app
+validate $? "change the directory"
+
+unzip /tmp/catalogue.zip
+validate $? "unzip the catalogue file"
+
+npm install
+validate $? "install the npm depnedcies"
 
 
 echo "$(timestamp) [info] script completed in $SECONDS Seconds "
