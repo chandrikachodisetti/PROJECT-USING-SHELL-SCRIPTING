@@ -48,9 +48,8 @@ validate $? "creating the folder"
 curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip  &>> $logs_file
 validate $? "download the  catalogue code"
 
-cd /app  &>> $logs_file
-validate $? "change the directory"
 
+cd /app  &>> $logs_file
 unzip /tmp/catalogue.zip  &>> $logs_file
 validate $? "unzip the catalogue file"
 
