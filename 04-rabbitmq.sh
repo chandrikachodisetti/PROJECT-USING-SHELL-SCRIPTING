@@ -45,7 +45,7 @@ validate $? "enable and start rabbitmq"
      rabbitmqctl add_user roboshop roboshop123  &>>$logs_file
      validate $? "creating rabbitmq user for app"
     else 
-    echo "$(timestamp) this user already exits...${y}SKIPPING${N}"
+    echo  -e "$(timestamp)[ INFO ] this user already exits...${y}SKIPPING${N}"
     fi
 
 rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$logs_file
