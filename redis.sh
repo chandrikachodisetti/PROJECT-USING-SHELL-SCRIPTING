@@ -40,9 +40,11 @@ validate $? "remote connection" &>> $logs_file
 
 systemctl enable redis &>> $logs_file
 systemctl start redis
-validate $? "system enable and start" 
+validate $? "system enable and start"
 
-echo "$(timestamp) [info] script completed in $seconds Seconds
+
+
+echo "$(timestamp) [info] script completed in $seconds Seconds "
 echo "$(timestamp) [info] =======script completed execution=========" | tee -a $logs_file
 
 
