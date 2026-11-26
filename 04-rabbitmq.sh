@@ -41,12 +41,12 @@ validate $? "enable and start rabbitmq"
 
 
   rabbitmqctl list_users | grep -w  "roboshop" &>>$logs_file
-  if [$? -ne 0]; then
-    rabbitmqctl add_user roboshop roboshop123  &>>$logs_file
-    validate $? "creating rabbitmq user for app"
-  else 
+    if [ $? -ne 0 ]; then
+     rabbitmqctl add_user roboshop roboshop123  &>>$logs_file
+     validate $? "creating rabbitmq user for app"
+    else 
     echo "this user already exits"
-fi
+    fi
 
 rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$logs_file
 validate $? "setup the permissions rabbitmq user for app"
