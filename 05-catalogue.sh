@@ -72,7 +72,7 @@ validate $? "adding mongorepo"
 dnf install mongodb-mongosh -y &>> $logs_file
 validate $? "install mongodb"
 
-mongosh --host <MONGODB.$domain_name> </app/db/master-data.js
+mongosh --host <mongodb.$domain_name>  </app/db/master-data.js
 validate $? "loading products"
 
 echo "$(timestamp) [info] script completed in $SECONDS Seconds "
