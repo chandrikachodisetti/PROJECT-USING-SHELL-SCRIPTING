@@ -1,9 +1,10 @@
+#!/bin/bash
+
 user_id=$(id -u)
 logs_folder="/var/log/roboshop"
 logs_file="${logs_folder}/${0}.log"
-domain_name="sep92s.online"
-scripts_dir="$(dirname -- "$(realpath -- "$0")")"
- #####scripts_dir=$(dirname "(realpath$0)")
+domain_name="daws92s.store"
+scripts_dir=$(dirname "$(realpath "$0")")
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
@@ -17,7 +18,7 @@ fi
 mkdir -p $logs_folder
 
 timestamp(){
-    date "+%d-%m-%Y %H:%M:%S"
+    date "+%F %T" 
 }
 
 validate(){
@@ -28,47 +29,48 @@ validate(){
         echo -e "$(timestamp) [INFO] ${2}..${G}SUCCESS${N}" | tee -a $logs_file
     fi
 }
-echo "$(timestamp) [info] =======script started execution=========" | tee -a $logs_file
 
+echo "$(timestamp) [INFO] ==== Script started Execution =====" | tee -a $logs_file
 
 dnf module disable nodejs -y &>> $logs_file
 dnf module enable nodejs:24 -y &>> $logs_file
-dnf install nodejs -y  &>> $logs_file
-validate $? "nodejs installation"
+dnf install nodejs -y &>> $logs_file
+validate $? "Installing nodejs 24"
 
-id roboshop  &>> $logs_file
+id roboshop &>> $logs_file
 if [ $? -ne 0 ]; then
-     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $logs_file
-     validate $? "creating the user for user"
-    else 
-    echo  -e "$(timestamp)[ INFO ] this user already exits...${Y}SKIPPING${N}"
-    fi
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $logs_file
+    validate $? "Creating system user"
+else
+    echo -e "$(timestamp) [INFO] System user roboshop already exist...${Y}SKIPPING${N}"
+fi
 
-mkdir  -p /app  &>> $logs_file
-validate $? "creating the folder"
+rm -rf /app
+validate $? "Removing old code"
 
-curl -L -o /tmp/user.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/user-v4.zip  &>> $logs_file
-validate $? "download the  user  code"
+mkdir -p /app
+validate $? "Creating app directory"
 
+curl -L -o /tmp/user.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/user-v4.zip &>> $logs_file
+validate $? "Downloading user"
 
-cd /app  &>> $logs_file
-unzip -o /tmp/user.zip  &>> $logs_file
-validate $? "unzipping  the user file"
+cd /app
+unzip /tmp/user.zip &>> $logs_file
+validate $? "Unzipping user"
 
-npm install  &>> $logs_file
-validate $? "install the npm depnedcies"
+npm install &>> $logs_file
+validate $? "Installing dependencies"
 
 sed -i "s/DOMAIN_NAME/$domain_name/g" "$scripts_dir/user.service"
 cp "$scripts_dir/user.service" /etc/systemd/system/user.service
 
+systemctl daemon-reload &>> $logs_file
+systemctl enable user &>> $logs_file
+systemctl start user &>> $logs_file
+validate $? "Starting and enabling user"
 
-systemctl enable user  &>> $logs_file
-systemctl start user  &>> $logs_file
-validate $? "enable and start"
+systemctl restart user
+validate $? "Restarting user"
 
-
-systemctl restart user &>> $logs_file
-validate $? "system restart"
-
-echo "$(timestamp) [info] script completed in $SECONDS Seconds "
-echo "$(timestamp) [info] =======script completed execution=========" | tee -a $logs_file
+echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
+echo "$(timestamp) [INFO] ==== Script completed Execution =====" | tee -a $logs_file
