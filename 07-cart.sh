@@ -39,7 +39,7 @@ validate $? "nodejs installation"
 id roboshop  &>> $logs_file
 if [ $? -ne 0 ]; then
      useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $logs_file
-     validate $? "creating the user for user"
+     validate $? "creating the user for cart"
     else 
     echo  -e "$(timestamp)[ INFO ] this user already exits...${Y}SKIPPING${N}"
     fi
@@ -47,49 +47,32 @@ if [ $? -ne 0 ]; then
 mkdir  -p /app  &>> $logs_file
 validate $? "creating the folder"
 
-curl -L -o /tmp/user.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip  &>> $logs_file
-validate $? "download the  user  code"
+curl -L -o /tmp/cart.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/cart-v4.zip  &>> $logs_file
+validate $? "download the cart code"
 
 
 cd /app  &>> $logs_file
-unzip -o /tmp/user.zip  &>> $logs_file
-validate $? "unzipping  the user file"
+unzip -o /tmp/cart.zip  &>> $logs_file
+validate $? "unzipping  the cart file"
 
 npm install  &>> $logs_file
 validate $? "install the npm depnedcies"
 
-sed -i "s/DOMAIN_NAME/$domain_name/g" "$scripts_dir/user.service"
-cp "$scripts_dir/user.service" /etc/systemd/system/user.service
+sed -i "s/DOMAIN_NAME/$domain_name/g" "$scripts_dir/cart.service"
+cp "$scripts_dir/cart.service" /etc/systemd/system/cart.service
 
 
 # sed -i "s/DOMAIN_NAME/$domain_name/g  "$scripts_dir/catalogue.service""  &>> $logs_file
 #cp  "$scripts_dir/catalogue.service" /etc/systemd/system/catalogue.service  &>> $logs_file
 
 systemctl daemon-reload  &>> $logs_file
-systemctl enable user  &>> $logs_file
-systemctl start user  &>> $logs_file
+systemctl enable cart  &>> $logs_file
+systemctl start cart &>> $logs_file
 validate $? "enable and start"
 
-cp "$scripts_dir/mongo.repo" /etc/yum.repos.d/mongo.repo &>> $logs_file
-validate $? "adding mongorepo" 
-
-dnf install mongodb-mongosh -y &>> $logs_file
-validate $? "install mongodb"
-
-product_count="$(mongosh --host "mongodb.$domain_name" --quiet --eval 'db.getSiblingDB("user").products.countDocuments()')" 2>> $logs_file
-validate $? "Connecting to MongoDB"
 
 
-
-
-if [ "$product_count" -eq 0 ]; then
-mongosh --host "mongodb.$domain_name" </app/db/master-data.js &>> $logs_file
-validate $? "loading products" 
-else 
-  echo -e "$(timestamp)[ INFO ] product count already exits...${Y}SKIPPING${N}"
-fi
-
-systemctl restart user &>> $logs_file
+systemctl restart cart &>> $logs_file
 validate $? "system restart"
 
 echo "$(timestamp) [info] script completed in $SECONDS Seconds "
