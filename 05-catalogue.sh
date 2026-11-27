@@ -83,7 +83,5 @@ fi
 systemctl restart catalogue &>> $logs_file
 validate $? "system restart"
 
-
-
 echo "$(timestamp) [info] script completed in $SECONDS Seconds "
 echo "$(timestamp) [info] =======script completed execution=========" | tee -a $logs_file
