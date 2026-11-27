@@ -72,7 +72,7 @@ validate $? "adding mongorepo"
 dnf install mongodb-mongosh -y &>> $logs_file
 validate $? "install mongodb"
 
-product_count="$(mongosh --host mongodb.$domain_name --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()')" 2>> $logs_file
+product_count="$(mongosh --host <mongodb.$domain_name> --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()')" 2>> $logs_file
 if [ "$product_count" -eq 0 ]; then
 mongosh --host mongodb.$domain_name </app/db/master-data.js &>> $logs_file
 validate $? "loading products" 
@@ -83,7 +83,7 @@ fi
 systemctl restart catalogue &>> $logs_file
 validate $? "system restart"
 
-curl http://localhost:8080/health 
+
 
 echo "$(timestamp) [info] script completed in $SECONDS Seconds "
 echo "$(timestamp) [info] =======script completed execution=========" | tee -a $logs_file
