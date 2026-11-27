@@ -80,8 +80,6 @@ product_count="$(mongosh --host "mongodb.$domain_name" --quiet --eval 'db.getSib
 validate $? "Connecting to MongoDB"
 
 
-
-
 if [ "$product_count" -eq 0 ]; then
 mongosh --host "mongodb.$domain_name" </app/db/master-data.js &>> $logs_file
 validate $? "loading products" 
