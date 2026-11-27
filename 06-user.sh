@@ -47,7 +47,7 @@ if [ $? -ne 0 ]; then
 mkdir  -p /app  &>> $logs_file
 validate $? "creating the folder"
 
-curl -L -o /tmp/user.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip  &>> $logs_file
+curl -L -o /tmp/user.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/user-v4.zip  &>> $logs_file
 validate $? "download the  user  code"
 
 
@@ -70,22 +70,6 @@ systemctl enable user  &>> $logs_file
 systemctl start user  &>> $logs_file
 validate $? "enable and start"
 
-cp "$scripts_dir/mongo.repo" /etc/yum.repos.d/mongo.repo &>> $logs_file
-validate $? "adding mongorepo" 
-
-dnf install mongodb-mongosh -y &>> $logs_file
-validate $? "install mongodb"
-
-product_count="$(mongosh --host "mongodb.$domain_name" --quiet --eval 'db.getSiblingDB("user").products.countDocuments()')" 2>> $logs_file
-validate $? "Connecting to MongoDB"
-
-
-if [ "$product_count" -eq 0 ]; then
-mongosh --host "mongodb.$domain_name" </app/db/master-data.js &>> $logs_file
-validate $? "loading products" 
-else 
-  echo -e "$(timestamp)[ INFO ] product count already exits...${Y}SKIPPING${N}"
-fi
 
 systemctl restart user &>> $logs_file
 validate $? "system restart"
