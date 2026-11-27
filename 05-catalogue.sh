@@ -72,9 +72,14 @@ validate $? "adding mongorepo"
 dnf install mongodb-mongosh -y &>> $logs_file
 validate $? "install mongodb"
 
-product_count="$(mongosh --host mongodb.$domain_name --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()')" 2>> $logs_file
+product_count="$(mongosh --host "mongodb.$domain_name" --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()')" 2>> $logs_file
+validate $? "Connecting to MongoDB"
+
+
+
+
 if [ "$product_count" -eq 0 ]; then
-mongosh --host mongodb.$domain_name </app/db/master-data.js &>> $logs_file
+mongosh --host "mongodb.$domain_name" </app/db/master-data.js &>> $logs_file
 validate $? "loading products" 
 else 
   echo -e "$(timestamp)[ INFO ] product count already exits...${Y}SKIPPING${N}"
