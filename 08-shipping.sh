@@ -32,8 +32,8 @@ validate(){
 }
 echo "$(timestamp) [info] =======script started execution=========" | tee -a $logs_file
 
-dnf module enable maven:3.9 -y
-dnf install maven java-25-openjdk-devel -y
+dnf module enable maven:3.9 -y &>> $logs_file
+dnf install maven java-25-openjdk-devel -y &>> $logs_file
 validate $? "java and maven install"
 
 echo "$(timestamp) [info] script completed in $SECONDS Seconds "
