@@ -73,11 +73,11 @@ dnf install mongodb-mongosh -y &>> $logs_file
 validate $? "install mongodb"
 
 product_count="$?(mongosh --host <mogodb.$domain_name> --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()')" 2>> $logs_file
-if [product_count -eq 0]; then
+if [ "$product_count" -eq 0 ]; then
 mongosh --host mongodb.$domain_name </app/db/master-data.js &>> $logs_file
 validate $? "loading products" 
 else 
-  echo  -e "$(timestamp)[ INFO ] product count already exits...${Y}SKIPPING${N}"
+  echo "$(timestamp)[ INFO ] product count already exits...${Y}SKIPPING${N}"
 
 systemctl restart catalogue &>> $logs_file
 validate $? "system restart"
