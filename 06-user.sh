@@ -3,7 +3,7 @@
 user_id=$(id -u)
 logs_folder="/var/log/roboshop"
 logs_file="${logs_folder}/${0}.log"
-domain_name="sep92s.online"
+domain_name="daws92s.store"
 scripts_dir=$(dirname "$(realpath "$0")")
 R="\e[31m"
 G="\e[32m"
@@ -45,10 +45,10 @@ else
     echo -e "$(timestamp) [INFO] System user roboshop already exist...${Y}SKIPPING${N}"
 fi
 
-rm -rf /app &>> $logs_file
+rm -rf /app
 validate $? "Removing old code"
 
-mkdir -p /app &>> $logs_file
+mkdir -p /app
 validate $? "Creating app directory"
 
 curl -L -o /tmp/user.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/user-v4.zip &>> $logs_file
@@ -69,7 +69,6 @@ systemctl enable user &>> $logs_file
 systemctl start user &>> $logs_file
 validate $? "Starting and enabling user"
 
-curl -i -X POST http://localhost:8080/login -H 'Content-Type: application/json' -d '{"name":"roboshop","password":"RoboShop@1"}' &>> $logs_file
 systemctl restart user
 validate $? "Restarting user"
 
