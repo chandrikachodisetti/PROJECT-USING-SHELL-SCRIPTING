@@ -45,10 +45,10 @@ else
     echo -e "$(timestamp) [INFO] System user roboshop already exist...${Y}SKIPPING${N}"
 fi
 
-rm -rf /app
+rm -rf /app &>> $logs_file
 validate $? "Removing old code"
 
-mkdir -p /app
+mkdir -p /app &>> $logs_file
 validate $? "Creating app directory"
 
 curl -L -o /tmp/user.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/user-v4.zip &>> $logs_file
@@ -69,7 +69,7 @@ systemctl enable user &>> $logs_file
 systemctl start user &>> $logs_file
 validate $? "Starting and enabling user"
 
-curl -i -X POST http://localhost:8080/login -H 'Content-Type: application/json' -d '{"name":"roboshop","password":"RoboShop@1"}'
+curl -i -X POST http://localhost:8080/login -H 'Content-Type: application/json' -d '{"name":"roboshop","password":"RoboShop@1"}' &>> $logs_file
 systemctl restart user
 validate $? "Restarting user"
 
