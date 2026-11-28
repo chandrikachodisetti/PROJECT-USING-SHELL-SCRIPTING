@@ -16,7 +16,7 @@ fi
 mkdir -p $logs_folder
 
 timestamp(){
-    date "+%d-%m-%Y %H:%M:%S"
+    date "+%F %T" 
 }
 
 validate(){
@@ -27,26 +27,20 @@ validate(){
         echo -e "$(timestamp) [INFO] ${2}..${G}SUCCESS${N}" | tee -a $logs_file
     fi
 }
-echo "$(timestamp) [info] =======script started execution=========" | tee -a $logs_file
 
+echo "$(timestamp) [INFO] ==== Script started Execution =====" | tee -a $logs_file
 
 dnf module disable redis -y &>> $logs_file
 dnf module enable redis:7 -y &>> $logs_file
 dnf install redis -y &>> $logs_file
-validate $? "install redis" 
+validate $? "Installing Redis"
 
 sed -i -e 's/^bind 127.0.0.1/bind 0.0.0.0/' -e 's/^protected-mode yes/protected-mode no/' /etc/redis/redis.conf
-validate $? "remote connection" &>> $logs_file
+validate $? "Allowing remote connections to Redis"
 
 systemctl enable redis &>> $logs_file
 systemctl start redis
-validate $? "system enable and start"
+validate $? "Enable and start Redis"
 
-
-
-echo "$(timestamp) [info] script completed in $SECONDS Seconds "
-echo "$(timestamp) [info] =======script completed execution=========" | tee -a $logs_file
-
-
-
-
+echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
+echo "$(timestamp) [INFO] ==== Script completed Execution =====" | tee -a $logs_file
