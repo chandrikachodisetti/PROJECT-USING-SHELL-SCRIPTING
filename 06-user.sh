@@ -3,7 +3,7 @@
 user_id=$(id -u)
 logs_folder="/var/log/roboshop"
 logs_file="${logs_folder}/${0}.log"
-domain_name="daws92s.store"
+domain_name="sep92s.online"
 scripts_dir=$(dirname "$(realpath "$0")")
 R="\e[31m"
 G="\e[32m"
@@ -69,6 +69,7 @@ systemctl enable user &>> $logs_file
 systemctl start user &>> $logs_file
 validate $? "Starting and enabling user"
 
+curl -i -X POST http://localhost:8080/login -H 'Content-Type: application/json' -d '{"name":"roboshop","password":"RoboShop@1"}'
 systemctl restart user
 validate $? "Restarting user"
 

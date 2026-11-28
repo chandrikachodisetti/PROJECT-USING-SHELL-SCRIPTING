@@ -36,5 +36,8 @@ dnf module enable maven:3.9 -y &>> $logs_file
 dnf install maven java-25-openjdk-devel -y &>> $logs_file
 validate $? "java and maven install"
 
+alternatives --set java "/usr/lib/jvm/java-25-openjdk/bin/java"
+validate $? "setting permissions to java" 
+
 echo "$(timestamp) [info] script completed in $SECONDS Seconds "
 echo "$(timestamp) [info] =======script completed execution=========" | tee -a $logs_file
